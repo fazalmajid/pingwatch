@@ -42,7 +42,7 @@ func get_dests(db *sql.DB) []string {
 	return dests
 }
 
-func record(db *sql.DB, r Result) {
+func record(db *sql.DB, r *Result) {
 	if *verbose {
 		log.Printf("ping %s(%s) = %v\n", r.Host, r.IP, r.Rtt)
 	}
@@ -57,4 +57,20 @@ func record(db *sql.DB, r Result) {
 	if rowCount != 1 {
 		log.Fatal("could not insert row in pings table", rowCount)
 	}
+}
+
+func ResultWorker(db *sql.DB) chan *Result {
+	in := make(chan *Result, 5)
+
+	go func() {
+		for {
+			r := <-in
+			if r == nil {
+				return
+			}
+			record(db, r)
+		}
+	}()
+
+	return in
 }
