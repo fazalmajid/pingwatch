@@ -21,6 +21,8 @@ const iso_8601 = "2006-01-02 15:04:05"
 var (
 	verbose    *bool
 	privileged *bool
+	interval   *time.Duration
+	port       *string
 )
 
 func main() {
@@ -28,9 +30,9 @@ func main() {
 	verbose = flag.Bool("v", false, "Verbose error reporting")
 	cpuprofile := flag.String("cpuprofile", "", "write cpu profile to file")
 	dsn := flag.String("db", "pingwatch.sqlite", "SQLite DB to use for the search index")
-	interval := flag.Duration("interval", 60*time.Second, "ping interval in seconds")
+	interval = flag.Duration("interval", 60*time.Second, "ping interval in seconds")
 	privileged = flag.Bool("privileged", true, "whether to use privileged ICMP or unprivileged UDP")
-	//port := flag.String("p", "localhost:8086", "host address and port to bind to")
+	port = flag.String("p", "localhost:8086", "host address and port to bind to")
 	flag.Parse()
 
 	var err error

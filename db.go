@@ -2,7 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"math"
+	"strings"
+	"time"
 )
 
 func create_table(db *sql.DB, name string, ddl string) {
@@ -73,4 +77,74 @@ func ResultWorker(db *sql.DB) chan *Result {
 	}()
 
 	return in
+}
+
+func get_data(db *sql.DB) []string {
+	rows, err := db.Query("SELECT time, host, ip, rtt FROM pings WHERE time > julianday('now')-14 ORDER by 1, 2")
+	if err != nil {
+		log.Fatal(err)
+	}
+	points := make(map[time.Time][]float64, 0)
+	colnum := 0
+	cols := make(map[string]int, 0)
+	var col int
+	var ok bool
+	var rounded time.Time
+	var row []float64
+
+	for rows.Next() {
+		var ts, rtt float64
+		var host, ip string
+		err = rows.Scan(&ts, &host, &ip, &rtt)
+		if rtt == 0.0 || rtt == -3600e3 {
+			continue
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		// julian day to Unix seconds
+		ts = (ts - 2440587.5) * 86400.0
+		rounded = time.Unix(int64(ts), int64(1e9*(ts-math.Trunc(ts))))
+		// XXX this rounding down is not very clean, should try to run pings
+		// XXX at the exact times instead
+		rounded = rounded.Round(*interval)
+		col, ok = cols[host]
+		if !ok {
+			colnum += 1
+			cols[host] = colnum
+			col = colnum
+		}
+		row, ok = points[rounded]
+		if !ok {
+			row = make([]float64, colnum)
+		}
+		for len(row) < col {
+			row = append(row, 0.0)
+		}
+		row[col-1] = rtt
+		points[rounded] = row
+	}
+	header := make([]string, colnum+1)
+	header[0] = "Date"
+	for colname, col := range cols {
+		header[col] = "\"" + colname + "\""
+	}
+	data := []string{strings.Join(header, ",") + "\n"}
+	for rounded, row = range points {
+		s := "\"" + rounded.String() + "\""
+		for i := 0; i < len(row); i++ {
+			if row[i] == 0.0 || row[i] == -3600e3 {
+				s = s + ",-100.0"
+			} else {
+				s = fmt.Sprintf("%s,%f", s, row[i])
+			}
+		}
+		if len(row) < colnum {
+			s = s + strings.Repeat(",-100.0", colnum-len(row))
+		}
+		s = s + "\n"
+
+		data = append(data, s)
+	}
+	return data
 }

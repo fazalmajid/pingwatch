@@ -68,11 +68,11 @@ type Pinger struct {
 	results chan *Result
 }
 
-func NewPinger(host string, results chan *Result) (*Pinger, error) {
+func NewPinger(host string, interval time.Duration, results chan *Result) (*Pinger, error) {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return &Pinger{
 		Host:      host,
-		Interval:  time.Second,
+		Interval:  interval,
 		Timeout:   5 * time.Second,
 		id:        r.Intn(math.MaxInt16),
 		network:   "udp",
@@ -192,6 +192,10 @@ func (p *Pinger) Run() {
 	p.recv = make(chan *packet, 5)
 	defer close(p.recv)
 	p.wg.Add(1)
+
+	if *verbose {
+		log.Println("starting pinger", p.Host, "interval", p.Interval)
+	}
 
 	err := p.sendICMP()
 	if err != nil {
@@ -452,7 +456,7 @@ func start_pinger(db *sql.DB, interval time.Duration) {
 	pingers = make(map[string]*Pinger, 0)
 	hosts := get_dests(db)
 	for _, host := range hosts {
-		pinger, err := NewPinger(host, results)
+		pinger, err := NewPinger(host, interval, results)
 		if err != nil {
 			log.Fatal("could not start pinger for", host, err)
 		}

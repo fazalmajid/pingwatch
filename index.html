@@ -1,2 +1,41 @@
-<h1>Hello, world</h1>
-<p>Hello, world!</p>
+<html>
+  <head>
+    <title>Pingwatch</title>
+    <script src="dygraph.min.js"></script>
+    <style>
+      body {
+        font-family: 'Source Sans Pro','Helvetica Neue', 'Helvetica Neue',Helvetica,'Nimbus Sans L',sans-serif;
+      }
+      .dygraph-legend {
+        float: right;
+      }
+      .dygraph-legend > span {
+        display: none;
+      }
+      .dygraph-legend > span.highlight {
+        display: inline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ping"/>
+    <script>
+      g = new Dygraph(
+        document.getElementById("ping"), "/data",  {
+          title: "Ping time (ms)",
+          width: window.innerWidth * 0.95,
+          height: window.innerHeight / 2,
+          highlightCircleSize: 2,
+          strokeWidth: 1,
+          strokeBorderWidth: 1,
+          legend: "follow",
+          highlightSeriesOpts: {
+            strokeWidth: 3,
+            strokeBorderWidth: 1,
+            highlightCircleSize: 5,
+          }
+        }
+      );
+    </script>
+  </body>
+</html>
