@@ -1,6 +1,10 @@
 # pingwatch
 Simple monitoring tool for your Internet connection, pings hosts and reports on availability and trends
 
+## Screen shot
+
+![Screen shot](screenshot.png)
+
 ## building
 
 Prerequisites:
@@ -39,3 +43,11 @@ The actual measurements are in the table `pings`:
 * *host* hostname that was pinged
 * *ip* IPv4 or IPv6 address *host* resolved to at ping time
 * *rtt* ping round-trip time in milliseconds
+
+## Web user interface
+
+The web user interface can be accessed at http://localhost:8086/ by default (or change it using the `-p` flag
+
+By convention, a ping time of -100ms means timeout, so downtime can stand out in the graph.
+
+You can zoom in by selecting a time range, scroll using by pressing Shift while moving the mouse or zoom out back to the original view by double-clicking (graphs are courtesy of the awesome [Dygraphs](https://dygraphs.com) library).
