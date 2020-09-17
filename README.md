@@ -5,7 +5,7 @@ Simple monitoring tool for your Internet connection, pings hosts and reports on 
 
 ![Screen shot](screenshot.png)
 
-## building
+## Building
 
 Prerequisites:
 
@@ -24,6 +24,8 @@ sudo setcap cap_net_raw=+ep pingwatch
 ```
 
 this allows `pingwatch` to open raw sockets so it can send ICMP packets.
+
+You can get a list of command-line flags using `pingwatch -h`
 
 ## Database
 
@@ -46,7 +48,7 @@ The actual measurements are in the table `pings`:
 
 ## Web user interface
 
-The web user interface can be accessed at http://localhost:8086/ by default (or change it using the `-p` flag
+The web user interface can be accessed at http://localhost:8086/ by default (or change it using the `-p` flag).
 
 By convention, a ping time of -100ms means timeout, so downtime can stand out in the graph.
 
