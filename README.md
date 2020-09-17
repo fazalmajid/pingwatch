@@ -35,7 +35,7 @@ To add a destination, run:
 
 ```
 sqlite3 pingwatch.sqlite << EOF
-insert into dests values ('1.1.1.1'), ('8.8.8.8');
+insert into dests values ('1.1.1.1'), ('8.8.8.8'), ('www.google.com');
 EOF
 ```
 
