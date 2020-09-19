@@ -131,7 +131,7 @@ func get_data(db *sql.DB) []string {
 	}
 	data := []string{strings.Join(header, ",") + "\n"}
 	for rounded, row = range points {
-		s := "\"" + rounded.String() + "\""
+		s := rounded.Format("2006-01-02T15:04:05")
 		for i := 0; i < len(row); i++ {
 			if row[i] == 0.0 || row[i] == -3600e3 {
 				s = s + ",-100.0"
