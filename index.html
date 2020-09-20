@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Pingwatch</title>
@@ -9,16 +10,11 @@
       .dygraph-legend {
         float: right;
       }
-      .dygraph-legend > span {
-        display: none;
-      }
-      .dygraph-legend > span.highlight {
-        display: inline;
-      }
     </style>
   </head>
   <body>
-    <div id="ping"/>
+    <div id="ping"></div>
+    <div id="legend"></div>
     <script>
       g = new Dygraph(
         document.getElementById("ping"), "/data",  {
@@ -28,7 +24,9 @@
           highlightCircleSize: 2,
           strokeWidth: 1,
           strokeBorderWidth: 1,
-          legend: "follow",
+          legend: "always",
+          labelsDiv: "legend",
+          labelsSeparateLines: true,
           highlightSeriesOpts: {
             strokeWidth: 3,
             strokeBorderWidth: 1,

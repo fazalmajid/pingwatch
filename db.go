@@ -129,7 +129,7 @@ func get_data(db *sql.DB) []string {
 	header := make([]string, colnum+1)
 	header[0] = "Date"
 	for colname, col := range cols {
-		header[col] = "\"" + colname + "\""
+		header[col] = colname
 	}
 	data := []string{strings.Join(header, ",") + "\n"}
 	for _, rounded = range ordered {
