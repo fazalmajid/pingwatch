@@ -91,6 +91,7 @@ func get_data(db *sql.DB) []string {
 	var ok bool
 	var rounded time.Time
 	var row []float64
+	ordered := make([]time.Time, 0)
 
 	for rows.Next() {
 		var ts, rtt float64
@@ -117,6 +118,7 @@ func get_data(db *sql.DB) []string {
 		row, ok = points[rounded]
 		if !ok {
 			row = make([]float64, colnum)
+			ordered = append(ordered, rounded)
 		}
 		for len(row) < col {
 			row = append(row, 0.0)
@@ -130,7 +132,8 @@ func get_data(db *sql.DB) []string {
 		header[col] = "\"" + colname + "\""
 	}
 	data := []string{strings.Join(header, ",") + "\n"}
-	for rounded, row = range points {
+	for _, rounded = range ordered {
+		row = points[rounded]
 		s := rounded.Format("2006-01-02T15:04:05")
 		for i := 0; i < len(row); i++ {
 			if row[i] == 0.0 || row[i] == -3600e3 {
