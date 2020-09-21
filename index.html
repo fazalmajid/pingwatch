@@ -15,25 +15,6 @@
   <body>
     <div id="ping"></div>
     <div id="legend"></div>
-    <script>
-      g = new Dygraph(
-        document.getElementById("ping"), "/data",  {
-          title: "Ping time (ms)",
-          width: window.innerWidth * 0.95,
-          height: window.innerHeight / 2,
-          highlightCircleSize: 2,
-          strokeWidth: 1,
-          strokeBorderWidth: 1,
-          legend: "always",
-          labelsDiv: "legend",
-          labelsSeparateLines: true,
-          highlightSeriesOpts: {
-            strokeWidth: 3,
-            strokeBorderWidth: 1,
-            highlightCircleSize: 5,
-          }
-        }
-      );
-    </script>
+    <script defer src="/initial"></script>
   </body>
 </html>

@@ -50,6 +50,6 @@ The actual measurements are in the table `pings`:
 
 The web user interface can be accessed at http://localhost:8086/ by default (or change it using the `-p` flag).
 
-By convention, a ping time of -100ms means timeout, so downtime can stand out in the graph.
+By convention, a ping time of -100ms means timeout, so downtime can stand out in the graph. In the SQLite database, this is stored as -3600e3
 
 You can zoom in by selecting a time range, scroll using by pressing Shift while moving the mouse or zoom out back to the original view by double-clicking (graphs are courtesy of the awesome [Dygraphs](https://dygraphs.com) library).
