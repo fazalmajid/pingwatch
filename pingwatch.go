@@ -22,6 +22,7 @@ var (
 	verbose    *bool
 	privileged *bool
 	interval   *time.Duration
+	display    *time.Duration
 	port       *string
 )
 
@@ -31,9 +32,15 @@ func main() {
 	cpuprofile := flag.String("cpuprofile", "", "write cpu profile to file")
 	dsn := flag.String("db", "pingwatch.sqlite", "SQLite DB to use for the search index")
 	interval = flag.Duration("interval", 60*time.Second, "ping interval in seconds")
+	display = flag.Duration("display", 14*86400*time.Second, "default date range to display in the Web UI")
+	days := flag.Int("days", 0, "alternate way to specify display window, in days")
 	privileged = flag.Bool("privileged", true, "whether to use privileged ICMP or unprivileged UDP")
 	port = flag.String("p", "localhost:8086", "host address and port to bind to")
 	flag.Parse()
+	if *days != 0 {
+		day_window := time.Duration(*days*86400) * time.Second
+		display = &day_window
+	}
 
 	var err error
 	var f *os.File

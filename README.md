@@ -53,3 +53,8 @@ The web user interface can be accessed at http://localhost:8086/ by default (or 
 By convention, a ping time of -100ms means timeout, so downtime can stand out in the graph. In the SQLite database, this is stored as -3600e3
 
 You can zoom in by selecting a time range, scroll using by pressing Shift while moving the mouse or zoom out back to the original view by double-clicking (graphs are courtesy of the awesome [Dygraphs](https://dygraphs.com) library).
+
+The default date range for the graph is 14 days, but you can change that:
+
+* `pingwatch -days 7` to show only the last 7 days
+* `pingwatch -display 6h` to display only the last 6 hours
