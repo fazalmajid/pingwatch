@@ -34,6 +34,9 @@ The list of hostnames or IPs to ping is in the table `dests`.
 To add a destination, run:
 
 ```
+sqlite3 pingwatch.sqlite << EOF
+insert into dests values ('1.1.1.1'), ('8.8.8.8'), ('www.google.com');
+EOF
 ```
 
 The actual measurements are in the table `pings`:
