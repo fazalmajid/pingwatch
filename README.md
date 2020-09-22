@@ -34,9 +34,6 @@ The list of hostnames or IPs to ping is in the table `dests`.
 To add a destination, run:
 
 ```
-sqlite3 pingwatch.sqlite << EOF
-insert into dests values ('1.1.1.1'), ('8.8.8.8'), ('www.google.com');
-EOF
 ```
 
 The actual measurements are in the table `pings`:
@@ -45,6 +42,23 @@ The actual measurements are in the table `pings`:
 * *host* hostname that was pinged
 * *ip* IPv4 or IPv6 address *host* resolved to at ping time
 * *rtt* ping round-trip time in milliseconds
+
+You can use sqlite Triggers to automatically clear old entries to keep the database small
+
+This trigger will delete entries from table pings which are older than 1 day:
+
+```
+sqlite3 pingwatch.sqlite << EOF
+CREATE TRIGGER clean1day AFTER INSERT ON pings
+BEGIN
+	delete from pings where pings.time < julianday('now','-1 day');
+END
+EOF
+
+``` 
+
+Refer to the [julianday() function manual](https://sqlite.org/lang_datefunc.html) for details
+
 
 ## Web user interface
 
