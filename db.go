@@ -77,8 +77,8 @@ func ResultWorker(db *sql.DB) chan *Result {
 	return in
 }
 
-func get_data(db *sql.DB) (header []string, ordered []int64, points map[int64][]float64) {
-	rows, err := db.Query("SELECT time, host, ip, rtt FROM pings WHERE time > julianday('now')-? ORDER by 1, 2", display.Seconds()/86400.0)
+func get_data(db *sql.DB, since float64) (header []string, ordered []int64, points map[int64][]float64) {
+	rows, err := db.Query("SELECT time, host, ip, rtt FROM pings WHERE time > julianday('now')-? AND time > ?ORDER by 1, 2", display.Seconds()/86400.0, 2440587.5+since/86400000.0)
 	if err != nil {
 		log.Fatal(err)
 	}
