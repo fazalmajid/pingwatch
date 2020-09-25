@@ -48,7 +48,7 @@ func record(db *sql.DB, r *Result) {
 	if *verbose {
 		log.Printf("ping %s(%s) = %v\n", r.Host, r.IP, r.Rtt)
 	}
-	res, err := db.Exec("insert into pings (time, host, ip, rtt) values (julianday('now'), ?, ?, ?)", r.Host, r.IP, 1e-6*float32(r.Rtt.Nanoseconds()))
+	res, err := db.Exec("insert or replace into pings (time, host, ip, rtt) values (julianday('now'), ?, ?, ?)", r.Host, r.IP, 1e-6*float32(r.Rtt.Nanoseconds()))
 	if err != nil {
 		log.Fatal(err)
 	}
