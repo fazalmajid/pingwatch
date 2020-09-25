@@ -7,13 +7,17 @@
       body {
         font-family: 'Source Sans Pro','Helvetica Neue', 'Helvetica Neue',Helvetica,'Nimbus Sans L',sans-serif;
       }
-      .dygraph-legend {
+      .dygraph-legend, form#options {
         float: right;
       }
     </style>
   </head>
   <body>
     <div id="ping"></div>
+    <form id="options">
+      <label for="autoscroll">Autoscroll</label>
+      <input type="checkbox" id="autoscroll" checked>
+    </form>
     <div id="legend"></div>
     <script defer src="/initial"></script>
     <script id="update"></script>

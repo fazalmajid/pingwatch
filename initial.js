@@ -14,6 +14,7 @@ var data = [
 ];
 var dmin = 0;
 var dmax = 0;
+var autoscroll = document.forms[0].autoscroll;
 if (data.length > 0) {
     dmin = data[0][0].getTime();
     dmax = data[data.length-1][0].getTime();
@@ -40,6 +41,12 @@ g = new Dygraph(
         zoomCallback: function(minDate, maxDate, yRanges) {
             dmin = minDate;
             dmax = maxDate;
+            let last = data[data.length-1][0].getTime();
+            if (dmax == 0 || dmax >= last - 300000) {
+                autoscroll.checked = true;
+            } else {
+                autoscroll.checked = false;
+            }
         }
     }
 );
@@ -49,7 +56,7 @@ function update() {
     // latest known data
     let last = data[data.length-1][0].getTime();
     // add a fudge factor of up to 5 minutes
-    if (dmax == 0 || dmax >= last - 300000) {
+    if (autoscroll.checked) {
         document.body.removeChild(document.getElementById("update"));
         script = document.createElement("SCRIPT");
         script.src = "/delta?since=" + String(last);
