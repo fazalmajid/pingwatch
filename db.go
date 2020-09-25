@@ -130,5 +130,12 @@ func get_data(db *sql.DB, since float64) (header []string, ordered []int64, poin
 	for colname, col := range cols {
 		header[col] = colname
 	}
+	// fill out the first rows that may be missing columns
+	num_cols := len(cols)
+	for _, ts := range ordered {
+		for len(points[ts]) < num_cols {
+			points[ts] = append(points[ts], 0.0)
+		}
+	}
 	return header, ordered, points
 }
