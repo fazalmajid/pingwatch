@@ -85,7 +85,7 @@ func webui_worker(db *sql.DB) {
 			"Header":  header,
 			"Ordered": ordered,
 			"Points":  points,
-			"Delay":   interval.Milliseconds(),
+			"Delay":   interval.Nanoseconds() / 1000000,
 		})
 	})
 
