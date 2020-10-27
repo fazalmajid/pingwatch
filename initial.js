@@ -123,4 +123,11 @@ function update() {
     }
 }
 
+function windowresize()
+{
+    document.getElementById('ping').style.width = (window.innerWidth * 0.95)+"px";
+    document.getElementById('ping').style.height = (window.innerHeight / 2)+"px";    
+}
+
+
 window.setInterval(update, {{$.Delay}});
