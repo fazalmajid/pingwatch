@@ -82,8 +82,6 @@ g = new Dygraph(
                  {{if (ne $i 0)}},{{end}}get_color({{- $i -}}, {{- $host_count -}} - 1)
         {{- end}}],
         title: "Ping time (ms)",
-        width: window.innerWidth * 0.95,
-        height: window.innerHeight / 2,
         highlightCircleSize: 2,
         strokeWidth: 1,
         strokeBorderWidth: 1,
