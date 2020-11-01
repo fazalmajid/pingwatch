@@ -38,6 +38,7 @@ if (delta.length > 0) {
         dmin = dmin + (new_dmax - dmax);
         dmax = new_dmax;
     }
+    rowmax = data.length - 1;
     delta = null;
     g.updateOptions({
         "file": data,
