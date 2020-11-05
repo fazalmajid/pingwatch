@@ -44,6 +44,22 @@ func get_dests(db *sql.DB) []string {
 	return dests
 }
 
+func db_add_dest(db *sql.DB, host string) {
+    log.Printf("adding host %s", host)
+    _ , err := db.Exec("insert into dests (host) values (?)", host);
+    if err != nil {
+		log.Fatal("could not insert host into destinations", err)
+	}
+}
+
+func db_del_dest(db *sql.DB, host string) {
+    log.Printf("deleting host %s", host)
+    _ , err := db.Exec("delete from dests where host=?", host);
+    if err != nil {
+		log.Fatal("could not insert host into destinations", err)
+	}
+}
+
 func record(db *sql.DB, r *Result) {
 	if *verbose {
 		log.Printf("ping %s(%s) = %v\n", r.Host, r.IP, r.Rtt)

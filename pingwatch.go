@@ -24,11 +24,15 @@ var (
 	interval   *time.Duration
 	display    *time.Duration
 	port       *string
+	addhost    *string
+	delhost    *string	
 )
 
 func main() {
 	// command-line options
 	verbose = flag.Bool("v", false, "Verbose error reporting")
+    addhost = flag.String("add","","Add a host to list of ping destinations")
+    delhost = flag.String("del","","Delete a host from list of ping destinations")
 	cpuprofile := flag.String("cpuprofile", "", "write cpu profile to file")
 	dsn := flag.String("db", "pingwatch.sqlite", "SQLite DB to use for the search index")
 	interval = flag.Duration("interval", 60*time.Second, "ping interval in seconds")
@@ -55,6 +59,44 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
+    if *addhost != "" {
+
+        
+    log.Printf("Adding host %s", *addhost)
+    if *dsn != "" {
+		db, err = sql.Open("sqlite3", *dsn)
+		if err != nil {
+			log.Fatalf("ERROR: opening SQLite DB %q, error: %s", *dsn, err)
+		}
+    
+    
+        db_add_dest (db, *addhost)
+    
+    }
+    
+    
+    
+    
+    os.Exit(0)   
+    }
+
+    if *delhost != "" {
+     
+    if *dsn != "" {
+		db, err = sql.Open("sqlite3", *dsn)
+		if err != nil {
+			log.Fatalf("ERROR: opening SQLite DB %q, error: %s", *dsn, err)
+		}
+    
+    
+        db_del_dest (db, *delhost)
+    
+    }
+    
+    os.Exit(0)          
+    }
+    
+    
 	log.Println("starting pingwatch")
 
 	end := make(chan os.Signal)
@@ -70,6 +112,8 @@ func main() {
 		}
 	}()
 
+    
+    
 	if *dsn != "" {
 		db, err = sql.Open("sqlite3", *dsn)
 		if err != nil {
