@@ -25,7 +25,7 @@ var (
 	display    *time.Duration
 	port       *string
 	addhost    *string
-	delhost    *string	
+	delhost    *string
 )
 
 func main() {
@@ -60,43 +60,27 @@ func main() {
 	}
 
     if *addhost != "" {
-
-        
-    log.Printf("Adding host %s", *addhost)
-    if *dsn != "" {
-		db, err = sql.Open("sqlite3", *dsn)
-		if err != nil {
-			log.Fatalf("ERROR: opening SQLite DB %q, error: %s", *dsn, err)
-		}
-    
-    
-        db_add_dest (db, *addhost)
-    
-    }
-    
-    
-    
-    
-    os.Exit(0)   
+        if *dsn != "" {
+            db, err = sql.Open("sqlite3", *dsn)
+            if err != nil {
+                log.Fatalf("ERROR: opening SQLite DB %q, error: %s", *dsn, err)
+            }
+            db_add_dest (db, *addhost)
+        }
+        os.Exit(0)
     }
 
     if *delhost != "" {
-     
-    if *dsn != "" {
-		db, err = sql.Open("sqlite3", *dsn)
-		if err != nil {
-			log.Fatalf("ERROR: opening SQLite DB %q, error: %s", *dsn, err)
-		}
-    
-    
-        db_del_dest (db, *delhost)
-    
+        if *dsn != "" {
+            db, err = sql.Open("sqlite3", *dsn)
+            if err != nil {
+                log.Fatalf("ERROR: opening SQLite DB %q, error: %s", *dsn, err)
+            }
+            db_del_dest (db, *delhost)
+        }
+        os.Exit(0)
     }
-    
-    os.Exit(0)          
-    }
-    
-    
+
 	log.Println("starting pingwatch")
 
 	end := make(chan os.Signal)
@@ -111,9 +95,6 @@ func main() {
 			dump_goroutines()
 		}
 	}()
-
-    
-    
 	if *dsn != "" {
 		db, err = sql.Open("sqlite3", *dsn)
 		if err != nil {

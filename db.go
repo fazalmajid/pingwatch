@@ -56,7 +56,7 @@ func db_del_dest(db *sql.DB, host string) {
     log.Printf("deleting host %s", host)
     _ , err := db.Exec("delete from dests where host=?", host);
     if err != nil {
-		log.Fatal("could not insert host into destinations", err)
+		log.Fatal("could not delete host from destinations", err)
 	}
 }
 
