@@ -46,6 +46,7 @@ func render_js_template(t *template.Template, w http.ResponseWriter, r *http.Req
 		log.Println("error rendering delta", err)
 		return
 	}
+	w.Header().Add("Content-Type", "text/javascript")
 	// strip the <script>...</script> tags added in open_js_template
 	out := buf.Bytes()
 	_, err = w.Write(out[8 : len(out)-9])
@@ -109,7 +110,7 @@ func webui_worker(db *sql.DB) {
 			"Ordered": ordered,
 			"Points":  points,
 			"MinData": display.Seconds() / interval.Seconds(),
-		})
+		})        
 	})
 
 	http.ListenAndServe(*port, nil)
