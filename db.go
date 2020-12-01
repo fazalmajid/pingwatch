@@ -45,17 +45,17 @@ func get_dests(db *sql.DB) []string {
 }
 
 func db_add_dest(db *sql.DB, host string) {
-    log.Printf("adding host %s", host)
-    _ , err := db.Exec("insert into dests (host) values (?)", host);
-    if err != nil {
+	log.Printf("adding host %s", host)
+	_, err := db.Exec("insert into dests (host) values (?)", host)
+	if err != nil {
 		log.Fatal("could not insert host into destinations", err)
 	}
 }
 
 func db_del_dest(db *sql.DB, host string) {
-    log.Printf("deleting host %s", host)
-    _ , err := db.Exec("delete from dests where host=?", host);
-    if err != nil {
+	log.Printf("deleting host %s", host)
+	_, err := db.Exec("delete from dests where host=?", host)
+	if err != nil {
 		log.Fatal("could not delete host from destinations", err)
 	}
 }
@@ -94,13 +94,23 @@ func ResultWorker(db *sql.DB) chan *Result {
 }
 
 func get_data(db *sql.DB, since float64) (header []string, ordered []int64, points map[int64][]float64) {
-	rows, err := db.Query("SELECT time, host, ip, rtt FROM pings WHERE time > julianday('now')-? AND time > ?ORDER by 1, 2", display.Seconds()/86400.0, 2440587.5+since/86400000.0)
+	rows, err := db.Query("SELECT DISTINCT host FROM dests ORDER BY 1")
+	var host string
+	cols := make(map[string]int, 0)
+	colnum := 0
+	for rows.Next() {
+		err = rows.Scan(&host)
+		if err != nil {
+			log.Fatal(err)
+		}
+		colnum += 1
+		cols[host] = colnum
+	}
+	rows, err = db.Query("SELECT time, host, ip, rtt FROM pings WHERE time > julianday('now')-? AND time > ?ORDER by 1, 2", display.Seconds()/86400.0, 2440587.5+since/86400000.0)
 	if err != nil {
 		log.Fatal(err)
 	}
 	points = make(map[int64][]float64, 0)
-	colnum := 0
-	cols := make(map[string]int, 0)
 	var col int
 	var ok bool
 	var rounded time.Time
@@ -109,7 +119,7 @@ func get_data(db *sql.DB, since float64) (header []string, ordered []int64, poin
 
 	for rows.Next() {
 		var fts, rtt float64
-		var host, ip string
+		var ip string
 		err = rows.Scan(&fts, &host, &ip, &rtt)
 		if rtt == 0.0 || rtt == -3600e3 {
 			continue
@@ -126,9 +136,8 @@ func get_data(db *sql.DB, since float64) (header []string, ordered []int64, poin
 		ts := rounded.Unix() * 1000
 		col, ok = cols[host]
 		if !ok {
-			colnum += 1
-			cols[host] = colnum
-			col = colnum
+			log.Printf("ERROR: skipping host=%v not found in dests\n", host)
+			continue
 		}
 		row, ok = points[ts]
 		if !ok {

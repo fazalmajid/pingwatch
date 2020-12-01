@@ -3,7 +3,9 @@ var data = [
     {{- if (ne $i 0) }},{{end}}
     [new Date({{$ts -}})
         {{- range (index $.Points $ts ) -}}, 
-            {{- if (or (eq . 0.0) (eq . -3600e3)) -}}
+            {{- if (eq . 0.0) -}}
+                null
+            {{- else if (eq . -3600e3) -}}
                 {{- -100.0 -}}
             {{- else -}}
                 {{- . -}}
