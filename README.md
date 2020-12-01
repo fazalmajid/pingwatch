@@ -41,6 +41,21 @@ insert into dests values ('1.1.1.1'), ('8.8.8.8'), ('www.google.com');
 EOF
 ```
 
+After database is initialized you can add or delete destinations as follows:
+
+To add a destination, run:
+
+```
+pingwatch -add example.com
+```
+
+To remove a destination, run:
+
+```
+pingwatch -del example.com
+```
+
+
 ### Measurement data
 
 The actual measurements are in the table `pings`:
