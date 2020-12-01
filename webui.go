@@ -104,7 +104,9 @@ func webui_worker(db *sql.DB) {
 		}
 
 		_, ordered, points := get_data(db, since)
-		log.Println("found", len(ordered), "points")
+		if *verbose {
+			log.Println("found", len(ordered), "points")
+		}
 		render_js_template(delta, w, r, map[string]interface{}{
 			"Ordered": ordered,
 			"Points":  points,

@@ -360,6 +360,7 @@ func (p *Pinger) processPacket(recv *packet, results chan *Result) error {
 		// XXX should lock p.pending
 		timeout, ok := p.pending[pkt.Seq]
 		if ok {
+			delete(p.pending, pkt.Seq)
 			timeout.timer.Stop()
 		}
 

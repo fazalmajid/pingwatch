@@ -13,6 +13,7 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
+	// _ "net/http/pprof"
 )
 
 const date_fmt = "[02/Jan/2006:15:04:05 -0700]"
