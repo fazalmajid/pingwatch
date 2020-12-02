@@ -121,9 +121,6 @@ func get_data(db *sql.DB, since float64) (header []string, ordered []int64, poin
 		var fts, rtt float64
 		var ip string
 		err = rows.Scan(&fts, &host, &ip, &rtt)
-		if rtt == 0.0 || rtt == -3600e3 {
-			continue
-		}
 		if err != nil {
 			log.Fatal(err)
 		}
