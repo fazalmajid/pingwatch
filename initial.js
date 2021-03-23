@@ -79,6 +79,7 @@ function get_color(i, total) {
 {{ $host_count := len .Header }}
 g = new Dygraph(
     document.getElementById("ping"), data, {
+        showRangeSelector: true,
         labels: [{{range $i, $h := .Header -}}
             {{if (ne $i 0)}},{{end}}"{{$h}}"
         {{- end}}],
@@ -120,6 +121,7 @@ g = new Dygraph(
             return html;
         },
         zoomCallback: function(minDate, maxDate, yRanges) {
+            //console.log("zoomCallback", minDate, maxDate, yRanges);
             dmin = minDate;
             dmax = maxDate;
             // find the last data point in the zoom range
