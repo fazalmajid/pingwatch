@@ -4,27 +4,46 @@
     <title>Pingwatch</title>
     <script src="dygraph.min.js"></script>
     <style>
-      body {
+    body {
         font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,'Nimbus Sans L',sans-serif;
-      }
-      .dygraph-legend, form#options {
-        float: right;
-      }
-      div#legend span.highlight {
+    }
+    .dygraph-legend, form#options {
+        #float: right;
+    }
+    div#legend span.highlight {
         background-color: #dddddd;
-      }
-      div#ping {
+    }
+    div#ping {
         width: 95vw;
         height: 50vh;
-      }
+    } 
+    @media (min-width: 1080px) {
+        div#legend {
+            width: 20vw;
+            height: 88vh;
+            float: right;
+        }
+        div#optionsform {
+            width: 20vw;
+            height: 10vh;
+            float: right;
+        }
+        div#ping {
+            width: 75vw;
+            height: 98vh;
+            float: left;
+        }
+    }
     </style>
   </head>
   <body>
     <div id="ping"></div>
+    <div id="optionsform">
     <form id="options">
       <label for="autoscroll">Autoscroll</label>
       <input type="checkbox" id="autoscroll" checked>
     </form>
+    </div>
     <div id="legend"></div>
     <script defer src="/initial"></script>
     <script id="update"></script>
