@@ -1,13 +1,11 @@
 module github.com/fazalmajid/pingwatch
 
-go 1.23.0
-
-toolchain go1.23.4
+go 1.26.0
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.24
-	github.com/rakyll/statik v0.1.7
-	golang.org/x/net v0.38.0
+	github.com/mattn/go-sqlite3 v1.14.52
+	github.com/rakyll/statik v0.1.8
+	golang.org/x/net v0.62.0
 )
 
-require golang.org/x/sys v0.31.0 // indirect
+require golang.org/x/sys v0.49.0 // indirect
